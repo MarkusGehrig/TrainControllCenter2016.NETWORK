@@ -12,6 +12,7 @@ namespace TrainControllCenter2016.NETWORK.CLASSES.MAIN
 {
     public class gcTrainControllerNetworkMain
     {
+        //Instances of the sender and the receiver for bidirectional communication
         gcTrainControllerNetworkReceiver Receiver = null;
         gcTrainControllerNetworkSender Sender = null;
 
