@@ -8,18 +8,26 @@ namespace TrainControllCenter2016.NETWORK.CLASSES.SPECIAL
 {
     public class gcNetworkMessage
     {
-        private DateTime lvTimeStamp = new DateTime();
-        private bool isAnswer = new bool();
+        private DateTime _LvTimeStamp = new DateTime();
+        private bool _IsAnswer = new bool();
+        Byte[] _ByteMessage = null;
 
         public DateTime LvTimeStamp
         {
-            get { return lvTimeStamp; }
-            set { lvTimeStamp = value; }
+            get { return _LvTimeStamp; }
+            set { _LvTimeStamp = value; }
         }
 
         public bool IsAnswer
         {
-            get { return isAnswer; }
+            set { _IsAnswer = value; }
+            get { return _IsAnswer; }
+        }
+
+        public byte[] ByteMessage
+        {
+            get { return _ByteMessage; }
+            set { _ByteMessage = value; }
         }
     }
 }

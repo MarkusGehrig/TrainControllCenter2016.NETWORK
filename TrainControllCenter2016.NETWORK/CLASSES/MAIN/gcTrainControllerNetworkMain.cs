@@ -13,11 +13,19 @@ namespace TrainControllCenter2016.NETWORK.CLASSES.MAIN
     public class gcTrainControllerNetworkMain
     {
         //Instances of the sender and the receiver for bidirectional communication
-        gcTrainControllerNetworkReceiver Receiver = null;
-        gcTrainControllerNetworkSender Sender = null;
+        private gcTrainControllerNetworkReceiver Receiver = null;
+        private gcTrainControllerNetworkSender Sender = null;
 
         // For History which Packet where Received and Send.
-        List<List<gcNetworkMessage>> NetworkMessagePackets = new List<List<gcNetworkMessage>>();
+        private List<List<gcNetworkMessage>> _NetworkMessagePackets = new List<List<gcNetworkMessage>>();
+
+        /// <summary>
+        /// Getter NetworkMessagePackets
+        /// </summary>
+        public List<List<gcNetworkMessage>> NetworkMessagePackets
+        {
+            get { return _NetworkMessagePackets; }
+        }
 
 
         /// <summary>
@@ -45,7 +53,19 @@ namespace TrainControllCenter2016.NETWORK.CLASSES.MAIN
 
         private void Receiver_RaiseEventPacketReceived(object sender, ecPacketReceived e)
         {
-             
+            gcNetworkMessage netMessage = new gcNetworkMessage();
+            netMessage.LvTimeStamp = DateTime.Now;
+            netMessage.ByteMessage = e.LvPacket;
+            
+            if (e.LvPacket[3] == 0x01)
+            {
+                netMessage.IsAnswer = true;
+            }
+            else
+            {
+                netMessage.IsAnswer = false;
+                sendAnswer(e.LvPacket);
+            }
         }
 
         private void ipv4Reader()
@@ -53,9 +73,12 @@ namespace TrainControllCenter2016.NETWORK.CLASSES.MAIN
 
         }
 
-        private void ipv6Reader()
+        private void sendAnswer(byte[] answer)
         {
+            byte[] lvPacketToSend = answer;
+            lvPacketToSend[3] = 0x01;
 
+            Sender.send(lvPacketToSend);
         }
     }
 }
